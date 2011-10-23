@@ -22,35 +22,38 @@
 #
 ##############################################################################
 
-{
-    'name': 'Project Issue Invoice',
-    'version': '1.0',
-    'category': 'Custom',
-    'description': """Create""",
-    'author': 'SYLEAM',
-    'website': 'http://www.syleam.fr/',
-    'depends': [
-        'base',
-        'project_issue_timesheet',
-    ],
-    'init_xml': [],
-    'images': [],
-    'update_xml': [
-        'project_view.xml',
-        'project_issue_view.xml',
-        'wizard/schedulers_all_view.xml',
-        #'security/groups.xml',
-        #'security/ir.model.access.csv',
-        #'view/menu.xml',
-        #'wizard/wizard.xml',
-        #'report/report.xml',
-    ],
-    'demo_xml': [],
-    'test': [],
-    #'external_dependancies': {'python': ['kombu'], 'bin': ['which']},
-    'installable': True,
-    'active': False,
-    'license': 'AGPL-3',
-}
+import threading
+from osv import osv
+
+
+class invoice_issue(osv.osv_memory):
+    _name = 'invoice.issue'
+    _description = 'Invoice Issue'
+
+    def _invoice_issue_calculation_all(self, cr, uid, ids, context=None):
+        """
+        @param self: The object pointer.
+        @param cr: A database cursor
+        @param uid: ID of the user currently logged in
+        @param ids: List of IDs selected
+        @param context: A standard dictionary
+        """
+        proj_issue_obj = self.pool.get('project.issue')
+        proj_issue_obj.run_scheduler(cr, uid, use_new_cursor=cr.dbname, context=context)
+        return {}
+
+    def invoice_issue_calculation(self, cr, uid, ids, context=None):
+        """
+        @param self: The object pointer.
+        @param cr: A database cursor
+        @param uid: ID of the user currently logged in
+        @param ids: List of IDs selected
+        @param context: A standard dictionary
+        """
+        threaded_calculation = threading.Thread(target=self._invoice_issue_calculation_all, args=(cr, uid, ids, context))
+        threaded_calculation.start()
+        return {'type': 'ir.actions.act_window_close'}
+
+invoice_issue()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

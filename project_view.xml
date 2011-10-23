@@ -31,31 +31,34 @@
             <field name="priority" eval="16"/>
             <field name="inherit_id" ref="project.edit_project"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='currency_id']" position="after">
-                    <separator string="Invoice Issue Policy" colspan="4"/>
-                    <field name="invoice_issue_ids" colspan="4" mode="tree,form" nolabel="1">
-                        <tree string="Invoice Issue policy" editable="bottom">
-                            <field name="sequence"/>
-                            <field name="categ_id"/>
-                            <field name="product_id" on_change="onchange_product_id(product_id, context=context)"/>
-                            <field name="name"/>
-                            <field name="notes" invisible="1"/>
-                            <field name="quantity"/>
-                            <field name="price_fixed"/>
-                        </tree>
-                        <form string="Invoice Issue policy">
-                            <field name="sequence"/>
-                            <field name="active"/>
-                            <field name="categ_id"/>
-                            <field name="product_id" on_change="onchange_product_id(product_id, context=context)"/>
-                            <field name="name" colspan="4"/>
-                            <field name="quantity"/>
-                            <field name="price_fixed"/>
-                            <separator string="Notes" colspan="4"/>
-                            <field name="notes" colspan="4"/>
-                            <field name="company_id" widget="selection" groups="base.group_multi_company" colspan="4"/>
-                        </form>
-                    </field>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Invoice Issue">
+                        <field name="invoice_issue_policy"/>
+                        <separator string="Invoice Issue Policy" colspan="4"/>
+                        <field name="invoice_issue_ids" colspan="4" mode="tree,form" nolabel="1">
+                            <tree string="Invoice Issue policy" editable="bottom">
+                                <field name="sequence"/>
+                                <field name="categ_id"/>
+                                <field name="product_id" on_change="onchange_product_id(product_id, context=context)"/>
+                                <field name="name"/>
+                                <field name="notes" invisible="1"/>
+                                <field name="quantity"/>
+                                <field name="price_fixed"/>
+                            </tree>
+                            <form string="Invoice Issue policy">
+                                <field name="sequence"/>
+                                <field name="active"/>
+                                <field name="categ_id"/>
+                                <field name="product_id" on_change="onchange_product_id(product_id, context=context)"/>
+                                <field name="name" colspan="4"/>
+                                <field name="quantity"/>
+                                <field name="price_fixed"/>
+                                <separator string="Notes" colspan="4"/>
+                                <field name="notes" colspan="4"/>
+                                <field name="company_id" widget="selection" groups="base.group_multi_company" colspan="4"/>
+                            </form>
+                        </field>
+                    </page>
                 </xpath>
             </field>
         </record>

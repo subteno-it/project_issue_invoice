@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        ##############################################################################
+        #
+        #    project_issue_invoice module for OpenERP, Create
+        #    Copyright (C) 2011 SYLEAM Info Services ([http://www.syleam.fr/]) 
+        #              Sebastien LANGE [sebastien.lange@syleam.fr]
+        #
+        #    This file is a part of project_issue_invoice
+        #
+        #    project_issue_invoice is free software: you can redistribute it and/or modify
+        #    it under the terms of the GNU Affero General Public License as published by
+        #    the Free Software Foundation, either version 3 of the License, or
+        #    (at your option) any later version.
+        #
+        #    project_issue_invoice is distributed in the hope that it will be useful,
+        #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+        #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        #    GNU Affero General Public License for more details.
+        #
+        #    You should have received a copy of the GNU Affero General Public License
+        #    along with this program.  If not, see [http://www.gnu.org/licenses/].
+        #
+        ##############################################################################
+
+        <!-- Compute Issue to Invoice -->
+
+        <record id="view_compute_schedulers_wizard" model="ir.ui.view">
+            <field name="name">Compute Issue to Invoice</field>
+            <field name="model">invoice.issue</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Information about this wizard">
+                    <label string="This wizard allows you to run all project issue in manual invoice to invoice. By default, the scheduler is launched automatically every night by OpenERP. You can use this menu to force it to be launched now. Note that it runs in the background, you may have to wait for a few minutes until it has finished computing." colspan="4"/>
+                    <separator colspan="4"/>
+                    <group col="2" colspan="4">
+                        <button icon='gtk-cancel' special="cancel"
+                            string="Cancel" />
+                        <button name="invoice_issue_calculation" string="Create invoice"
+                            colspan="1" type="object" icon="gtk-ok" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Create invoice of issues"
+            res_model="invoice.issue"
+            src_model="project.issue"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_compute_schedulers"/>
+
+    </data>
+</openerp>

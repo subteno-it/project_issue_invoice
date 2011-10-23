@@ -30,7 +30,7 @@ class project_project(osv.osv):
     _inherit = 'project.project'
 
     _columns = {
-        'invoice_issue_ids': fields.one2many('project.issue.invoice', 'invoice_id', 'Invoice Project Issue', help="Set method to invoice the issues closed" ),
+        'invoice_issue_ids': fields.one2many('project.issue.invoice', 'project_id', 'Invoice Project Issue', help="Set method to invoice the issues closed" ),
         'invoice_issue_policy': fields.selection([
             ('none','None'),
             ('auto', 'Auto'),

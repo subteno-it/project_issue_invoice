@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    project_issue_invoice module for OpenERP, Create
-#    Copyright (C) 2011 SYLEAM Info Services (<http://www.syleam.fr/>) 
+#    Copyright (C) 2011 SYLEAM Info Services (<http://www.syleam.fr/>)
 #              Sebastien LANGE <sebastien.lange@syleam.fr>
 #
 #    This file is a part of project_issue_invoice
@@ -22,6 +22,6 @@
 #
 ##############################################################################
 
-
+import schedulers_all
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
