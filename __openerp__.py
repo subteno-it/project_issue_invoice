@@ -39,6 +39,7 @@
         'project_view.xml',
         'project_issue_view.xml',
         'wizard/schedulers_all_view.xml',
+        'project_issue_invoice_data.xml',
         #'security/groups.xml',
         #'security/ir.model.access.csv',
         #'view/menu.xml',

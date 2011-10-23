@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        ##############################################################################
+        #
+        #    project_issue_invoice module for OpenERP, Create draft invoice for issues done not invoiced
+
+        #    Copyright (C) 2011 SYLEAM Info Services ([http://www.syleam.fr/]) 
+        #              Sebastien LANGE [sebastien.lange@syleam.fr]
+        #
+        #    This file is a part of project_issue_invoice
+        #
+        #    project_issue_invoice is free software: you can redistribute it and/or modify
+        #    it under the terms of the GNU Affero General Public License as published by
+        #    the Free Software Foundation, either version 3 of the License, or
+        #    (at your option) any later version.
+        #
+        #    project_issue_invoice is distributed in the hope that it will be useful,
+        #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+        #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        #    GNU Affero General Public License for more details.
+        #
+        #    You should have received a copy of the GNU Affero General Public License
+        #    along with this program.  If not, see [http://www.gnu.org/licenses/].
+        #
+        ##############################################################################
+
+        <record forcecreate="True" id="ir_cron_scheduler_action" model="ir.cron">
+            <field name="name">Run Invoice Issue</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="time.strftime('%Y-%m-01 00:00:01')"/>
+            <field eval="False" name="doall"/>
+            <field eval="'project.issue'" name="model"/>
+            <field eval="'run_scheduler'" name="function"/>
+            <field eval="'(False,)'" name="args"/>
+        </record>
+
+    </data>
+</openerp>
