@@ -142,9 +142,9 @@ class project_issue(osv.osv):
             return False
 
     def make_invoice(self, cr, uid, issue_ids, use_new_cursor=False, context=None):
-        if use_new_cursor:
-            cr = pooler.get_db(use_new_cursor).cursor()
         if issue_ids:
+            if use_new_cursor:
+                cr = pooler.get_db(use_new_cursor).cursor()
             if isinstance(issue_ids, (int, long,)):
                 issue_ids = [issue_ids]
             # Search all project to invoice, criteria : issue not invoice and state == Done
@@ -282,7 +282,10 @@ class project_issue(osv.osv):
             # Compute the amount of invoice
             if invoice_ids:
                 invoice_obj.button_compute(cr, uid, invoice_ids, context)
-                return invoice_ids
+            if use_new_cursor:
+                cr.commit()
+                cr.close()
+            return invoice_ids
         else:
             return False
 
@@ -308,10 +311,15 @@ class project_issue(osv.osv):
         ''' Runs through scheduler.
         @param use_new_cursor: False or the dbname
         '''
+        if use_new_cursor:
+            cr = pooler.get_db(use_new_cursor).cursor()
         project_ids = self.pool.get('project.project').search(cr, uid, [('invoice_issue_policy','=','manual'),('state','=','open')], context=context)
         issue_ids = self.search_issue2invoice(cr, uid, project_ids, context=context)
         if issue_ids:
             self.make_invoice(cr, uid, issue_ids, use_new_cursor=use_new_cursor, context=None)
+        if use_new_cursor:
+            cr.commit()
+            cr.close()
 
 project_issue()
 

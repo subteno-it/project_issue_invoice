@@ -41,7 +41,7 @@
         'wizard/schedulers_all_view.xml',
         'project_issue_invoice_data.xml',
         #'security/groups.xml',
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         #'view/menu.xml',
         #'wizard/wizard.xml',
         #'report/report.xml',
