@@ -54,7 +54,7 @@
                                 <field name="quantity"/>
                                 <field name="price_fixed"/>
                                 <separator string="Notes" colspan="4"/>
-                                <field name="notes" colspan="4"/>
+                                <field name="notes" colspan="4" nolabel="1"/>
                                 <field name="company_id" widget="selection" groups="base.group_multi_company" colspan="4"/>
                             </form>
                         </field>
