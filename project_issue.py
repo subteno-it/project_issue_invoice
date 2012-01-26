@@ -139,25 +139,24 @@ class project_issue(osv.osv):
             else:
                 return self.search(cr, uid, [('invoiced','=',False), ('state','=','done'), ('project_id', 'in', project_ids)])
         else:
-            return False
+            return []
 
-    def make_invoice(self, cr, uid, issue_ids, use_new_cursor=False, context=None):
+    def make_invoice(self, cr, uid, issue_ids, project_ids=None, use_new_cursor=False, context=None):
         if issue_ids:
             if use_new_cursor:
                 cr = pooler.get_db(use_new_cursor).cursor()
             if isinstance(issue_ids, (int, long,)):
                 issue_ids = [issue_ids]
-            # Search all project to invoice, criteria : issue not invoice and state == Done
-            cr.execute("select project_id from project_issue where id in %s group by project_id", (tuple(issue_ids),))
-            project_queries = cr.dictfetchall()
-            project_ids = []
-            for project_query in project_queries:
-                project_ids.append(project_query['project_id'])
+            if project_ids is None:
+                project_ids = []
             project_obj = self.pool.get('project.project')
             invoice_obj = self.pool.get('account.invoice')
             invoice_line_obj = self.pool.get('account.invoice.line')
             project_issue_invoice_obj = self.pool.get('project.issue.invoice')
             product_pricelist_obj = self.pool.get('product.pricelist')
+            if issue_ids:
+                issue_data = self.read(cr, uid, issue_ids, ['project_id'], context=context)
+                project_ids = list(set(project_ids) | set([data['project_id'][0] for data in issue_data if data['project_id']]))
             invoice_ids = []
             # Field for know the categ already invoiced
             categ_used_ids = []
@@ -313,10 +312,17 @@ class project_issue(osv.osv):
         '''
         if use_new_cursor:
             cr = pooler.get_db(use_new_cursor).cursor()
+        import pdb
+        pdb.set_trace()
         project_ids = self.pool.get('project.project').search(cr, uid, [('invoice_issue_policy','=','manual'),('state','=','open')], context=context)
         issue_ids = self.search_issue2invoice(cr, uid, project_ids, context=context)
-        if issue_ids:
-            self.make_invoice(cr, uid, issue_ids, use_new_cursor=use_new_cursor, context=None)
+        # Search all project with lines with price fixed
+        issue_inv_obj = self.pool.get('project.issue.invoice')
+        issue_inv_ids = issue_inv_obj.search(cr, uid, [('project_id', 'in', project_ids),('price_fixed', '=', True)], context=context)
+        issue_inv_data = issue_inv_obj.read(cr, uid, issue_inv_ids, ['project_id'], context=context)
+        project_ids = list(set([data['project_id'][0] for data in issue_inv_data if data['project_id']]))
+        if issue_ids or project_ids:
+            self.make_invoice(cr, uid, issue_ids, project_ids, use_new_cursor=use_new_cursor, context=None)
         if use_new_cursor:
             cr.commit()
             cr.close()
