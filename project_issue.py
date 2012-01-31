@@ -141,8 +141,8 @@ class project_issue(osv.osv):
         else:
             return []
 
-    def make_invoice(self, cr, uid, issue_ids, project_ids=None, use_new_cursor=False, context=None):
-        if issue_ids:
+    def make_invoice(self, cr, uid, issue_ids=None, project_ids=None, use_new_cursor=False, context=None):
+        if issue_ids or project_ids:
             if use_new_cursor:
                 cr = pooler.get_db(use_new_cursor).cursor()
             if isinstance(issue_ids, (int, long,)):
