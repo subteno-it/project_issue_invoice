@@ -316,7 +316,7 @@ class project_issue(osv.osv):
         issue_ids = self.search_issue2invoice(cr, uid, project_ids, context=context)
         # Search all project with lines with price fixed
         issue_inv_obj = self.pool.get('project.issue.invoice')
-        issue_inv_ids = issue_inv_obj.search(cr, uid, [('project_id', 'in', project_ids),('price_fixed', '=', True)], context=context)
+        issue_inv_ids = issue_inv_obj.search(cr, uid, [('project_id', 'in', project_ids),('quantity', '>', 0.0)], context=context)
         issue_inv_data = issue_inv_obj.read(cr, uid, issue_inv_ids, ['project_id'], context=context)
         project_ids = list(set([data['project_id'][0] for data in issue_inv_data if data['project_id']]))
         if issue_ids or project_ids:
