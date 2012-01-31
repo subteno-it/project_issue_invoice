@@ -312,8 +312,6 @@ class project_issue(osv.osv):
         '''
         if use_new_cursor:
             cr = pooler.get_db(use_new_cursor).cursor()
-        import pdb
-        pdb.set_trace()
         project_ids = self.pool.get('project.project').search(cr, uid, [('invoice_issue_policy','=','manual'),('state','=','open')], context=context)
         issue_ids = self.search_issue2invoice(cr, uid, project_ids, context=context)
         # Search all project with lines with price fixed
