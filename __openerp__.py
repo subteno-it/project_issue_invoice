@@ -25,8 +25,8 @@
 {
     'name': 'Project Issue Invoice',
     'version': '1.0',
-    'category': 'Custom',
-    'description': """Create""",
+    'category': 'Project Management',
+    'description': """Allow to invoice project issue""",
     'author': 'SYLEAM',
     'website': 'http://www.syleam.fr/',
     'depends': [
