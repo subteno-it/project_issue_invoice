@@ -22,15 +22,15 @@
 #
 ##############################################################################
 
-import threading
-from osv import osv
+from openerp import models, api
 
 
-class invoice_issue(osv.osv_memory):
+class InvoiceIssue(models.TransientModel):
     _name = 'invoice.issue'
     _description = 'Invoice Issue'
 
-    def _invoice_issue_calculation_all(self, cr, uid, ids, context=None):
+    @api.multi
+    def invoice_issue_calculation(self):
         """
         @param self: The object pointer.
         @param cr: A database cursor
@@ -38,22 +38,8 @@ class invoice_issue(osv.osv_memory):
         @param ids: List of IDs selected
         @param context: A standard dictionary
         """
-        proj_issue_obj = self.pool.get('project.issue')
-        proj_issue_obj.run_scheduler(cr, uid, use_new_cursor=cr.dbname, context=context)
-        return {}
-
-    def invoice_issue_calculation(self, cr, uid, ids, context=None):
-        """
-        @param self: The object pointer.
-        @param cr: A database cursor
-        @param uid: ID of the user currently logged in
-        @param ids: List of IDs selected
-        @param context: A standard dictionary
-        """
-        threaded_calculation = threading.Thread(target=self._invoice_issue_calculation_all, args=(cr, uid, ids, context))
-        threaded_calculation.start()
+        self.env['project.issue'].run_scheduler()
         return {'type': 'ir.actions.act_window_close'}
 
-invoice_issue()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

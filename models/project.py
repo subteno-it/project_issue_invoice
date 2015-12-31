@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    project_issue_invoice module for OpenERP, Create
-#    Copyright (C) 2011 SYLEAM Info Services (<http://www.syleam.fr/>) 
+#    Copyright (C) 2011 SYLEAM Info Services (<http://www.syleam.fr/>)
 #              Sebastien LANGE <sebastien.lange@syleam.fr>
 #
 #    This file is a part of project_issue_invoice
@@ -22,6 +22,18 @@
 #
 ##############################################################################
 
+from openerp import models, fields
+
+
+class ProjectProject(models.Model):
+    _inherit = 'project.project'
+
+    invoice_issue_ids = fields.One2many('project.issue.invoice', 'project_id', string='Invoice Project Issue', help='Set method to invoice the issues closed')
+    invoice_issue_policy = fields.Selection([
+        ('none', 'None'),
+        ('auto', 'Auto'),
+        ('manual', 'Manual')], string='Invoice Issue Policy', default='none', help="""If the issue change state to done and must be create a draft invoice per issue, set to 'Auto Invoice',\n
+If invoice any issues done, set to 'manuel', create one draft invoice for all issues done not invoiced""")
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data>
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    project_issue_invoice module for OpenERP, Create
-#    Copyright (C) 2011 SYLEAM Info Services ([http://www.syleam.fr/]) 
-#              Sebastien LANGE [sebastien.lange@syleam.fr]
+#    Copyright (C) 2011 SYLEAM Info Services (<http://www.syleam.fr/>)
+#              Sebastien LANGE <sebastien.lange@syleam.fr>
 #
 #    This file is a part of project_issue_invoice
 #
@@ -20,10 +18,11 @@
 #    GNU Affero General Public License for more details.
 #
 #    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see [http://www.gnu.org/licenses/].
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
+import project_issue
+import project
 
-    </data>
-</openerp>
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

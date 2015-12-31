@@ -31,26 +31,21 @@
     'website': 'http://www.syleam.fr/',
     'depends': [
         'base',
-        'project_issue_timesheet',
+        'project_issue_sheet',
     ],
-    'init_xml': [],
     'images': [],
-    'update_xml': [
-        'project_view.xml',
-        'project_issue_view.xml',
+    'data': [
+        'views/project_view.xml',
+        'views/project_issue_view.xml',
         'wizard/schedulers_all_view.xml',
         'project_issue_invoice_data.xml',
-        #'security/groups.xml',
         'security/ir.model.access.csv',
-        #'view/menu.xml',
-        #'wizard/wizard.xml',
-        #'report/report.xml',
     ],
-    'demo_xml': [],
+    'demo': [],
     'test': [],
     #'external_dependancies': {'python': ['kombu'], 'bin': ['which']},
     'installable': True,
-    'active': False,
+    'auto_install': False,
     'license': 'AGPL-3',
 }
 
