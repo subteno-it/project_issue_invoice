@@ -99,11 +99,12 @@ class ProjectIssue(models.Model):
             categ_used_ids = []
             for project in projects:
                 # Prepare invoice
-                vals = {'partner_id': project.partner_id.id,
-                        'type': 'out_invoice',
-                        'name': '-',
-                        'currency_id': self.env.user.company_id.currency_id.id,
-                        }
+                vals = {
+                    'partner_id': project.partner_id.id,
+                    'type': 'out_invoice',
+                    'name': '-',
+                    'currency_id': self.env.user.company_id.currency_id.id,
+                }
                 # new creates a temporary record to apply the on_change afterwards
                 invoice = invoice_obj.new(vals)
                 invoice._onchange_partner_id()
@@ -124,9 +125,11 @@ class ProjectIssue(models.Model):
                 pricelist_id = project.partner_id.property_product_pricelist.id
                 for invoice_issue in invoice_issue_ids:
                     # Prepare invoice
-                    vals = {'product_id': invoice_issue.product_id.id,
-                            'partner_id': project.partner_id.id,
-                            }
+                    vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': invoice_issue.product_id.id,
+                        'partner_id': project.partner_id.id,
+                    }
                     # new creates a temporary record to apply the on_change afterwards
                     invoice_line = invoice_line_obj.new(vals)
                     invoice_line._onchange_product_id()
@@ -152,9 +155,11 @@ class ProjectIssue(models.Model):
                 ])
                 for invoice_issue in invoice_issue_ids:
                     # Prepare invoice
-                    vals = {'product_id': invoice_issue.product_id.id,
-                            'partner_id': project.partner_id.id,
-                            }
+                    vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': invoice_issue.product_id.id,
+                        'partner_id': project.partner_id.id,
+                    }
                     # new creates a temporary record to apply the on_change afterwards
                     invoice_line = invoice_line_obj.new(vals)
                     invoice_line._onchange_product_id()
@@ -208,7 +213,8 @@ class ProjectIssue(models.Model):
                             'invoiced': True
                         })
                     for issue_categ in issue_categ_ids:
-                        duration += issue_categ.duration_timesheet
+                        for timesheet in issue_categ.timesheet_ids:
+                            duration += timesheet.unit_amount
                     # If duration > 0, the duration of all tickets not invoiced for this category is more than the quantity indicate in project issue invoice so invoice the difference.
                     if duration > 0:
                         price = project.partner_id.property_product_pricelist.price_get(
@@ -249,8 +255,7 @@ class ProjectIssue(models.Model):
             ('project_id', 'in', project_ids.mapped('id')),
             ('quantity', '>', 0.0),
         ])
-        issue_inv_data = issue_inv_ids.read(['project_id'])
-        project_ids = list(set([data['project_id'][0] for data in issue_inv_data if data['project_id']]))
+        project_ids = list(set([issue_inv.project_id for issue_inv in issue_inv_ids if issue_inv.project_id]))
         if issue_ids or project_ids:
             self.make_invoice(issue_ids, project_ids)
 
